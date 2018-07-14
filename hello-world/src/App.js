@@ -5,21 +5,32 @@ class App extends Component {
     constructor(props){
         super(props);
         this.addTrack = this.addTrack.bind(this);
+        this.findTrack = this.findTrack.bind(this);
     }
     addTrack(){
         console.log('addTrack', this.trackInput.value);
         this.props.onAddTrack(this.trackInput.value);
         this.trackInput.value = '';
     }
+    findTrack(){
+        console.log('findTrack', this.searchInput.value);
+        this.props.onFindTrack(this.searchInput.value);
+    }
     render(){
         console.log(this.props.tracks);
         return (
             <div>
-                <input type="text" ref={(input) => { this.trackInput = input }} />
-                <button onClick={this.addTrack}>Add track</button>
+                <div>
+                    <input type="text" ref={(input) => { this.trackInput = input }} />
+                    <button onClick={this.addTrack}>Add track</button>
+                </div>
+                <div>
+                    <input type="text" ref={(input) => { this.searchInput = input }} />
+                    <button onClick={this.findTrack}>Find track</button>
+                </div>
                 <ul>
                     {this.props.tracks.map((track, index) => 
-                        <li key={index}>{track}</li>
+                        <li key={index}>{track.trackName}</li>
                     )}
                 </ul>
             </div>
@@ -29,11 +40,25 @@ class App extends Component {
 
 export default connect(
     state => ({
-        tracks: state.tracks
+        tracks: state.tracks.filter(track => track.trackName.includes(state.filterTracks))
     }),
     dispatch => ({
         onAddTrack: (trackName)=>{
-            dispatch({type: 'ADD_TRACK', payload: trackName})
+            const payload = {
+                id: Date.now().toString(),
+                trackName 
+            }
+            dispatch({
+                type: 'ADD_TRACK', 
+                payload
+            })
+        },
+        onFindTrack: (trackName)=> {
+            //console.log('trackName', trackName);
+            dispatch({
+                type: 'FIND_TRACK',
+                payload: trackName
+            })
         }
     })
 )(App);
