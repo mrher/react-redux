@@ -6,22 +6,34 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-const initialState = [
-    'Smells like teen spirit',
-    'Enter Sandman'
-]
+const initialState = {
+    tracks: [
+        'Smells like teen spirit',
+        'Enter Sandman'
+    ],
+    playlists: [
+        'my work playlis',
+        'my honme playlist'
+    ]
+}
 
 function playlist(state = initialState, action){
-    if (action.type == 'ADD_TRACK'){
-        return [
+    if (action.type === 'ADD_TRACK'){
+        return {
             ...state,
-            action.payload
-        ];
+            tracks: [...state.tracks, action.payload]
+        };
+    }else if (action.type === 'DELETE_TRACK'){
+        return state;
+    }else if (action.type === 'ADD_PLAYLIST'){
+        return state;
+    }else if (action.type === 'DELETE_PLAYLIST'){
+        return state;
     }
     return state;
 }
 
-const store = createStore(playlist);
+const store = createStore(playlist, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 ReactDOM.render(
     <Provider store={store}>
