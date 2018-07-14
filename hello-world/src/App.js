@@ -1,36 +1,38 @@
 import React, { Component } from 'react';
-import RegistartoinForm from './RegistartoinForm';
-import Dropdown from './Dropdown';
-import Header from './Header';
-import Refs from './Refs';
-import './App.css';
-
-const menu = [
-    {
-        link: '/articles',
-        label: 'Articles'
-    },
-    {
-        link: '/contacts',
-        label: 'Contacts'
-    },
-    {
-        link: '/posts',
-        label: 'Posts'
-    }
-]
+import { connect } from 'react-redux';
 
 class App extends Component {
+    constructor(props){
+        super(props);
+        this.addTrack = this.addTrack.bind(this);
+    }
+    addTrack(){
+        console.log('addTrack', this.trackInput.value);
+        this.props.onAddTrack(this.trackInput.value);
+    }
     render(){
+        console.log(this.props.testStore);
         return (
-            <div className="container">
-                <RegistartoinForm />
-                <Header items={menu} />
-                <Dropdown />
-                <Refs />
+            <div>
+                <input type="text" ref={(input) => { this.trackInput = input }} />
+                <button onClick={this.addTrack}>Add track</button>
+                <ul>
+                    {this.props.testStore.map((track, index) => 
+                        <li key={index}>{track}</li>
+                    )}
+                </ul>
             </div>
         )
     }
 }
 
-export default App;
+export default connect(
+    state => ({
+        testStore: state
+    }),
+    dispatch => ({
+        onAddTrack: (trackName)=>{
+            dispatch({type: 'ADD_TRACK', payload: trackName})
+        }
+    })
+)(App);
