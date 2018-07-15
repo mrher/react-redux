@@ -43,9 +43,10 @@ class App extends Component {
 }
 
 export default connect(
-    state => ({
+    (state, ownProps) => ({
         tracks: state.tracks.filter(
             track => track.trackName.includes(state.filterTracks)
+            ,ownProps
         )
     }),
     dispatch => ({
