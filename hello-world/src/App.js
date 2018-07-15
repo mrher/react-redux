@@ -2,44 +2,39 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import getTracks from './actions/tracks'
 
-class App extends Component {
-    constructor(props){
-        super(props);
-        this.addTrack = this.addTrack.bind(this);
-        this.findTrack = this.findTrack.bind(this);
+const App = ({ tracks, onAddTrack, onFindTrack, onGetTracks }) => {
+    let trackInput = '';
+    let searchInput = '';
+    
+    const addTrack = () => {
+        console.log('addTrack', trackInput.value);
+        onAddTrack(trackInput.value);
+        trackInput.value = '';
     }
-    addTrack(){
-        console.log('addTrack', this.trackInput.value);
-        this.props.onAddTrack(this.trackInput.value);
-        this.trackInput.value = '';
+    const findTrack = () => {
+        console.log('findTrack', searchInput.value);
+        onFindTrack(searchInput.value);
     }
-    findTrack(){
-        console.log('findTrack', this.searchInput.value);
-        this.props.onFindTrack(this.searchInput.value);
-    }
-    render(){
-        console.log(this.props.tracks);
-        return (
+    return (
+        <div>
             <div>
-                <div>
-                    <input type="text" ref={(input) => { this.trackInput = input }} />
-                    <button onClick={this.addTrack}>Add track</button>
-                </div>
-                <div>
-                    <input type="text" ref={(input) => { this.searchInput = input }} />
-                    <button onClick={this.findTrack}>Find track</button>
-                </div>
-                <div>
-                    <button onClick={this.props.onGetTracks}>Get tracks</button>
-                </div>
-                <ul>
-                    {this.props.tracks.map((track, index) => 
-                        <li key={index}>{track.trackName}</li>
-                    )}
-                </ul>
+                <input type="text" ref={(input) => { trackInput = input }} />
+                <button onClick={addTrack}>Add track</button>
             </div>
-        )
-    }
+            <div>
+                <input type="text" ref={(input) => { searchInput = input }} />
+                <button onClick={findTrack}>Find track</button>
+            </div>
+            <div>
+                <button onClick={onGetTracks}>Get tracks</button>
+            </div>
+            <ul>
+                {tracks.map((track, index) => 
+                    <li key={index}>{track.trackName}</li>
+                )}
+            </ul>
+        </div>
+    )
 }
 
 export default connect(
