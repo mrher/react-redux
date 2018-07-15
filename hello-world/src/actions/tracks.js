@@ -21,7 +21,7 @@ var mockApiData = [
     }
 ]
 
-export default function getTracks(){
+const getTracks = () => {
     return dispatch => {
         setTimeout(() => {
             console.log('i got tracks'); 
@@ -32,3 +32,5 @@ export default function getTracks(){
         }, 2000)
     }
 }
+
+export default getTracks;
