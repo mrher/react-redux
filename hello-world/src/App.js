@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import getTracks from './actions/tracks'
 
-const App = ({ tracks, onAddTrack, onFindTrack, onGetTracks }) => {
+const App = ({ tracks, onAddTrack, onFindTrack, onGetTracks,ownProps }) => {
+    console.log('ownProps', ownProps);
     let trackInput = '';
     let searchInput = '';
     
